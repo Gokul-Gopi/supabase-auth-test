@@ -1,16 +1,26 @@
+import api from "@/api/axios";
+import { ISignup } from "@/utils/types";
 import Link from "next/link";
 import { FormProvider, useForm } from "react-hook-form";
 
-interface ISignupForm {
-  email: string;
-  password: string;
-}
-
 const Page = () => {
-  const form = useForm<ISignupForm>();
+  const form = useForm<ISignup>({
+    defaultValues: {
+      email: "sbusertestmaxx@yopmail.com",
+      password: "password",
+      name: "Test User",
+    },
+  });
 
-  const onSubmit = (data: ISignupForm) => {
-    console.log(data);
+  const onSubmit = async (data: ISignup) => {
+    try {
+      const response = await api.post("/signup", data);
+      console.log({ response });
+
+      //eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      alert(error?.response?.data?.message);
+    }
   };
 
   return (

@@ -1,15 +1,11 @@
+import { ILogin } from "@/utils/types";
 import Link from "next/link";
 import { FormProvider, useForm } from "react-hook-form";
 
-interface LoginForm {
-  email: string;
-  password: string;
-}
-
 const Page = () => {
-  const form = useForm<LoginForm>();
+  const form = useForm<ILogin>();
 
-  const onSubmit = (data: LoginForm) => {
+  const onSubmit = (data: ILogin) => {
     console.log(data);
   };
 
