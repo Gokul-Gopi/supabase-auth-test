@@ -1,3 +1,5 @@
+import { AxiosError, AxiosResponse } from "axios";
+
 export interface ISignup {
   email: string;
   password: string;
@@ -7,4 +9,14 @@ export interface ISignup {
 export interface ILogin {
   email: string;
   password: string;
+}
+
+interface AxiosErrorResponse extends AxiosResponse {
+  data: {
+    message: string;
+  };
+}
+
+export interface IRequestError extends AxiosError {
+  response: AxiosErrorResponse;
 }

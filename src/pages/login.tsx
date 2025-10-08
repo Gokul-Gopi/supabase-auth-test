@@ -1,20 +1,22 @@
-import api from "@/api/axios";
+import { useLogin } from "@/api/queries/auth";
 import { ILogin } from "@/utils/types";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { FormProvider, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 const Page = () => {
   const form = useForm<ILogin>();
+  const login = useLogin();
+  const router = useRouter();
 
   const onSubmit = async (data: ILogin) => {
-    try {
-      const response = await api.post("/login", data);
-      console.log({ response });
-
-      //eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      alert(error?.response?.data?.message);
-    }
+    login.mutate(data, {
+      onSuccess: () => {
+        router.push("/");
+        toast.success("Login successful");
+      },
+    });
   };
 
   return (

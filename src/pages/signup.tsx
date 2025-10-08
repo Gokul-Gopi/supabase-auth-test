@@ -1,20 +1,22 @@
-import api from "@/api/axios";
+import { useSignup } from "@/api/queries/auth";
 import { ISignup } from "@/utils/types";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { FormProvider, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 const Page = () => {
   const form = useForm<ISignup>();
+  const signup = useSignup();
+  const router = useRouter();
 
   const onSubmit = async (data: ISignup) => {
-    try {
-      const response = await api.post("/signup", data);
-      console.log({ response });
-
-      //eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      alert(error?.response?.data?.message);
-    }
+    signup.mutate(data, {
+      onSuccess: () => {
+        router.push("/");
+        toast.success("Login successful");
+      },
+    });
   };
 
   return (
@@ -24,11 +26,8 @@ const Page = () => {
     >
       <FormProvider {...form}>
         <input type="text" {...form.register("email")} className="border" />
-        <input
-          type="password"
-          {...form.register("password")}
-          className="border"
-        />
+        <input type="name" {...form.register("name")} className="border" />
+        <input {...form.register("password")} className="border" />
         <button type="submit">Signup</button>
         <Link href="/login">I already have an account bro</Link>
       </FormProvider>
