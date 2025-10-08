@@ -1,3 +1,4 @@
+import api from "@/api/axios";
 import { ILogin } from "@/utils/types";
 import Link from "next/link";
 import { FormProvider, useForm } from "react-hook-form";
@@ -5,8 +6,15 @@ import { FormProvider, useForm } from "react-hook-form";
 const Page = () => {
   const form = useForm<ILogin>();
 
-  const onSubmit = (data: ILogin) => {
-    console.log(data);
+  const onSubmit = async (data: ILogin) => {
+    try {
+      const response = await api.post("/login", data);
+      console.log({ response });
+
+      //eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      alert(error?.response?.data?.message);
+    }
   };
 
   return (

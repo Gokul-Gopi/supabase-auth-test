@@ -4,13 +4,7 @@ import Link from "next/link";
 import { FormProvider, useForm } from "react-hook-form";
 
 const Page = () => {
-  const form = useForm<ISignup>({
-    defaultValues: {
-      email: "sbusertestmaxx@yopmail.com",
-      password: "password",
-      name: "Test User",
-    },
-  });
+  const form = useForm<ISignup>();
 
   const onSubmit = async (data: ISignup) => {
     try {
