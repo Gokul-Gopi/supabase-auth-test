@@ -1,5 +1,12 @@
 import { useLogout } from "@/api/queries/auth";
+import withAuth from "@/utils/withAuth";
 import { useRouter } from "next/router";
+
+export const getServerSideProps = withAuth(async () => {
+  return {
+    props: {},
+  };
+});
 
 const Page = () => {
   const router = useRouter();

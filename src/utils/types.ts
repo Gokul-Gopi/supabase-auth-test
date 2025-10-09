@@ -20,3 +20,9 @@ interface AxiosErrorResponse extends AxiosResponse {
 export interface IRequestError extends AxiosError {
   response: AxiosErrorResponse;
 }
+
+export interface IUser {
+  id: string;
+  email: string;
+  name: string;
+}
