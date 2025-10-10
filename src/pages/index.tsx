@@ -1,5 +1,7 @@
 import { useLogout } from "@/api/queries/auth";
+import { Button } from "@/components/ui/button";
 import withAuth from "@/utils/withAuth";
+import { Icon } from "@iconify/react";
 import { useRouter } from "next/router";
 
 export const getServerSideProps = withAuth(async () => {
@@ -22,7 +24,9 @@ const Page = () => {
 
   return (
     <div>
-      <button onClick={onLogout}>Logout</button>
+      <Button onClick={onLogout}>
+        <Icon icon="tabler:logout-2" /> Logout
+      </Button>
     </div>
   );
 };

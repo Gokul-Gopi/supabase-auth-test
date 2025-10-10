@@ -53,7 +53,7 @@ const withAuth = (
       }
 
       return handler(ctx, user.user_metadata as IUser);
-    } catch (error) {
+    } catch {
       return {
         redirect: {
           destination: "/login",
