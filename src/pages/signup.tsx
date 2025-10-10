@@ -1,6 +1,6 @@
 import { useSignup } from "@/api/queries/auth";
-import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import LoaderButton from "@/components/ui/LoaderButton";
 import { ISignup } from "@/utils/types";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -43,7 +43,11 @@ const Page = () => {
           className="border"
           placeholder="Password"
         />
-        <Button type="submit">Signup</Button>
+
+        <LoaderButton type="submit" loading={signup.isPending}>
+          Signup
+        </LoaderButton>
+
         <Link href="/login" className="text-primary text-sm text-center">
           I already have an account bro
         </Link>

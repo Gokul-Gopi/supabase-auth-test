@@ -1,5 +1,5 @@
 import { useLogout } from "@/api/queries/auth";
-import { Button } from "@/components/ui/Button";
+import LoaderButton from "@/components/ui/LoaderButton";
 import withAuth from "@/utils/client/withAuth";
 import { Icon } from "@iconify/react";
 import { useRouter } from "next/router";
@@ -24,9 +24,9 @@ const Page = () => {
 
   return (
     <div>
-      <Button onClick={onLogout}>
+      <LoaderButton onClick={onLogout} loading={logout.isPending}>
         <Icon icon="tabler:logout-2" /> Logout
-      </Button>
+      </LoaderButton>
     </div>
   );
 };

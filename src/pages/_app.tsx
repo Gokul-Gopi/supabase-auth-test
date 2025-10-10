@@ -4,6 +4,7 @@ import queryClient from "@/utils/client/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import type { AppProps } from "next/app";
 import { Toaster } from "react-hot-toast";
+import toasterOptions from "@/utils/client/toasterOptions";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -15,8 +16,8 @@ export default function App({ Component, pageProps }: AppProps) {
         disableTransitionOnChange
       >
         <Component {...pageProps} />
+        <Toaster {...toasterOptions} />
       </ThemeProvider>
-      <Toaster position="bottom-center" />
     </QueryClientProvider>
   );
 }

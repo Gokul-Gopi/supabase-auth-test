@@ -1,5 +1,5 @@
 import { useLogin } from "@/api/queries/auth";
-import { Button } from "@/components/ui/Button";
+import LoaderButton from "@/components/ui/LoaderButton";
 import { Input } from "@/components/ui/Input";
 import { ILogin } from "@/utils/types";
 import Link from "next/link";
@@ -38,7 +38,11 @@ const Page = () => {
           className="border"
           placeholder="Password"
         />
-        <Button type="submit">Login</Button>
+
+        <LoaderButton type="submit" loading={login.isPending}>
+          Login
+        </LoaderButton>
+
         <Link href="/signup" className="text-primary text-sm text-center">
           Create a new account yo!
         </Link>
