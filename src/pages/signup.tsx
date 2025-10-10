@@ -14,7 +14,7 @@ const Page = () => {
     signup.mutate(data, {
       onSuccess: () => {
         router.push("/");
-        toast.success("Login successful");
+        toast.success("Welcome bro!");
       },
     });
   };

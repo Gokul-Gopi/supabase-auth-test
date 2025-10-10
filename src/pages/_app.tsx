@@ -1,6 +1,6 @@
-import { ThemeProvider } from "@/components/theme-provider";
 import "@/styles/globals.css";
-import queryClient from "@/utils/queryClient";
+import { ThemeProvider } from "@/components/ui/theme-provider";
+import queryClient from "@/utils/client/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import type { AppProps } from "next/app";
 import { Toaster } from "react-hot-toast";

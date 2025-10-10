@@ -1,4 +1,4 @@
-import { handleError } from "@/utils/helpers/server";
+import { handleError } from "@/utils/server/helpers";
 import supabaseServerClient from "@/utils/supbaseServerClient";
 import type { NextApiRequest, NextApiResponse } from "next";
 

@@ -1,6 +1,6 @@
 import { GetServerSideProps, type GetServerSidePropsContext } from "next";
 import { createServerClient, serializeCookieHeader } from "@supabase/ssr";
-import { IUser } from "./types";
+import { IUser } from "../types";
 
 const createClient = ({ req, res }: GetServerSidePropsContext) => {
   const supabase = createServerClient(
