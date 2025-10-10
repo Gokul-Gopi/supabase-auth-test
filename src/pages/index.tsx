@@ -1,5 +1,5 @@
 import { useLogout } from "@/api/queries/auth";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import withAuth from "@/utils/client/withAuth";
 import { Icon } from "@iconify/react";
 import { useRouter } from "next/router";

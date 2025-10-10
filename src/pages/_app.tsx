@@ -1,5 +1,5 @@
 import "@/styles/globals.css";
-import { ThemeProvider } from "@/components/ui/theme-provider";
+import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import queryClient from "@/utils/client/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import type { AppProps } from "next/app";

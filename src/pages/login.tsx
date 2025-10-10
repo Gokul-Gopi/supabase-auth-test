@@ -1,5 +1,6 @@
 import { useLogin } from "@/api/queries/auth";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 import { ILogin } from "@/utils/types";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -23,17 +24,24 @@ const Page = () => {
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
-      className="flex flex-col gap-4 min-h-dvh justify-center items-center"
+      className="flex flex-col gap-4 min-h-dvh justify-center mx-auto max-w-[20rem]"
     >
       <FormProvider {...form}>
-        <input type="text" {...form.register("email")} className="border" />
-        <input
+        <Input
+          {...form.register("email")}
+          className="border"
+          placeholder="Email"
+        />
+        <Input
           type="password"
           {...form.register("password")}
           className="border"
+          placeholder="Password"
         />
         <Button type="submit">Login</Button>
-        <Link href="/signup">Create a new account yo!</Link>
+        <Link href="/signup" className="text-primary text-sm text-center">
+          Create a new account yo!
+        </Link>
       </FormProvider>
     </form>
   );
