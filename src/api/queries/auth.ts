@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import api from "../axios";
 import { ILogin, ISignup } from "@/utils/types";
 import { onError } from "@/utils/client/helpers";
@@ -24,9 +24,8 @@ export const useLogout = () => {
   });
 };
 
-export const useOAuthSignup = (provider: "google") => {
+export const useCreateSession = () => {
   return useMutation({
-    mutationFn: () => api.post(`/auth/signup?provider=${provider}`),
-    onError: onError,
+    mutationFn: (code: string) => api.post("/auth/create-session", { code }),
   });
 };

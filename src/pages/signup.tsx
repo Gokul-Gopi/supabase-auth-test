@@ -1,9 +1,11 @@
-import { useOAuthSignup, useSignup } from "@/api/queries/auth";
+import { useSignup } from "@/api/queries/auth";
 import { Input } from "@/components/ui/Input";
 import LoaderButton from "@/components/ui/LoaderButton";
+import supabase from "@/utils/client/supabase";
 import { ISignup } from "@/utils/types";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
@@ -11,15 +13,20 @@ const Page = () => {
   const form = useForm<ISignup>();
   const signup = useSignup();
   const router = useRouter();
-  const oAuthSignup = useOAuthSignup("google");
+  const [oAuthLoading, setOAuthLoading] = useState(false);
 
-  const onOAuthSubmit = () => {
-    oAuthSignup.mutate(undefined, {
-      // onSuccess: () => {
-      //   router.push("/");
-      //   toast.success("Welcome bro!");
-      // },
+  const onOAuthSubmit = async () => {
+    setOAuthLoading(true);
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${process.env.NEXT_PUBLIC_ORIGIN}/create-session`,
+        // queryParams: {
+        //   prompt: "consent",
+        // },
+      },
     });
+    setOAuthLoading(false);
   };
 
   const onSubmit = (data: ISignup) => {
@@ -38,8 +45,8 @@ const Page = () => {
     >
       <LoaderButton
         onClick={onOAuthSubmit}
+        loading={oAuthLoading}
         type="button"
-        loading={oAuthSignup.isPending}
         variant="secondary"
       >
         Signup with Google
