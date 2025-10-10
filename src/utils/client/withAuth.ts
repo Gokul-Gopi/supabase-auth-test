@@ -43,8 +43,6 @@ const withAuth = (
         data: { user },
       } = await supabase.auth.getUser();
 
-      console.log("Authenticated user:", user);
-
       if (!user) {
         return {
           redirect: {
