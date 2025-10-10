@@ -12,7 +12,7 @@ const Page = () => {
   const login = useLogin();
   const router = useRouter();
 
-  const onSubmit = async (data: ILogin) => {
+  const onSubmit = (data: ILogin) => {
     login.mutate(data, {
       onSuccess: () => {
         router.push("/");

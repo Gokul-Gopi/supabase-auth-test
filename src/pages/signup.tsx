@@ -1,4 +1,4 @@
-import { useSignup } from "@/api/queries/auth";
+import { useOAuthSignup, useSignup } from "@/api/queries/auth";
 import { Input } from "@/components/ui/Input";
 import LoaderButton from "@/components/ui/LoaderButton";
 import { ISignup } from "@/utils/types";
@@ -11,8 +11,18 @@ const Page = () => {
   const form = useForm<ISignup>();
   const signup = useSignup();
   const router = useRouter();
+  const oAuthSignup = useOAuthSignup("google");
 
-  const onSubmit = async (data: ISignup) => {
+  const onOAuthSubmit = () => {
+    oAuthSignup.mutate(undefined, {
+      // onSuccess: () => {
+      //   router.push("/");
+      //   toast.success("Welcome bro!");
+      // },
+    });
+  };
+
+  const onSubmit = (data: ISignup) => {
     signup.mutate(data, {
       onSuccess: () => {
         router.push("/");
@@ -26,6 +36,17 @@ const Page = () => {
       onSubmit={form.handleSubmit(onSubmit)}
       className="flex flex-col gap-4 h-dvh justify-center mx-auto max-w-[20rem]"
     >
+      <LoaderButton
+        onClick={onOAuthSubmit}
+        type="button"
+        loading={oAuthSignup.isPending}
+        variant="secondary"
+      >
+        Signup with Google
+      </LoaderButton>
+
+      <span className="text-center text-xs tracking-wider">OR</span>
+
       <FormProvider {...form}>
         <Input
           {...form.register("email")}
