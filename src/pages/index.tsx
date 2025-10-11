@@ -23,10 +23,13 @@ const Page = () => {
   };
 
   return (
-    <div>
-      <LoaderButton onClick={onLogout} loading={logout.isPending}>
-        <Icon icon="tabler:logout-2" /> Logout
-      </LoaderButton>
+    <div className="px-20">
+      <div className="flex justify-between items-center pt-6">
+        <h3 className="text-xl">Well look who came crawling back, user!</h3>
+        <LoaderButton onClick={onLogout} loading={logout.isPending}>
+          <Icon icon="tabler:logout-2" /> Logout
+        </LoaderButton>
+      </div>
     </div>
   );
 };

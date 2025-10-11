@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/Input";
 import LoaderButton from "@/components/ui/LoaderButton";
 import supabase from "@/utils/client/supabase";
 import { ISignup } from "@/utils/types";
+import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -13,6 +14,7 @@ const Page = () => {
   const form = useForm<ISignup>();
   const signup = useSignup();
   const router = useRouter();
+
   const [oAuthLoading, setOAuthLoading] = useState(false);
 
   const onOAuthSubmit = async () => {
@@ -21,6 +23,7 @@ const Page = () => {
       provider: "google",
       options: {
         redirectTo: `${process.env.NEXT_PUBLIC_ORIGIN}/create-session`,
+        // The param was added for testing, since the google consent screen only shows up once for a particular account
         // queryParams: {
         //   prompt: "consent",
         // },
@@ -49,10 +52,15 @@ const Page = () => {
         type="button"
         variant="secondary"
       >
-        Signup with Google
+        <Icon icon="tabler:brand-google-filled" />
+        Login with Google
       </LoaderButton>
 
-      <span className="text-center text-xs tracking-wider">OR</span>
+      <div className="flex items-center gap-2">
+        <hr className="w-full" />
+        <span className="text-center text-xs tracking-wider">OR</span>
+        <hr className="w-full" />
+      </div>
 
       <FormProvider {...form}>
         <Input
