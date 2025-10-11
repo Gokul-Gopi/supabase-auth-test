@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import api from "../axios";
 import { ILogin, ISignup } from "@/utils/types";
 import { onError } from "@/utils/client/helpers";

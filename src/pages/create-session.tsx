@@ -39,6 +39,8 @@ const Page = () => {
         );
       },
     });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <div>Just a moment. Almost done!</div>;
