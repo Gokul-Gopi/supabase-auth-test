@@ -2,7 +2,10 @@ import { type NextApiRequest, type NextApiResponse } from "next";
 import createServerClient from "@/utils/supbaseServerClient";
 import { handleError } from "@/utils/server/helpers";
 
-export default async function POST(req: NextApiRequest, res: NextApiResponse) {
+export default async function hadnler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   try {
     const code = req.body.code;
 

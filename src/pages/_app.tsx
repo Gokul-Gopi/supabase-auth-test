@@ -12,7 +12,6 @@ export default function App({ Component, pageProps }: AppProps) {
   const { setUser } = useAuthStore();
 
   useEffect(() => {
-    console.log("effect ran");
     if (pageProps.user) {
       setUser(pageProps.user);
     }
