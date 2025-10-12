@@ -7,7 +7,7 @@ export default async function hadnler(
   res: NextApiResponse
 ) {
   try {
-    const code = req.body.code;
+    const code = req.body?.code;
 
     if (code) {
       const supabase = createServerClient(req, res);

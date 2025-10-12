@@ -1,5 +1,6 @@
-import { handleError } from "@/utils/server/helpers";
+import { handleError, validateBody } from "@/utils/server/helpers";
 import supabaseServerClient from "@/utils/supbaseServerClient";
+import { signupSchema } from "@/utils/validationSchema";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -10,12 +11,7 @@ export default async function handler(
     if (req.method !== "POST")
       return res.status(405).json({ message: "Method not allowed" });
 
-    const { email, password, name } = req.body;
-
-    if (!email || !password || !name)
-      return res
-        .status(400)
-        .json({ message: "Email and password are required" });
+    const { email, password, name } = validateBody(signupSchema, req.body);
 
     const supabase = supabaseServerClient(req, res);
 
