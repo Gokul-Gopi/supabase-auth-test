@@ -26,3 +26,8 @@ export interface IUser {
   email: string;
   name: string;
 }
+
+export interface IPostForm {
+  title: string;
+  content: string;
+}
