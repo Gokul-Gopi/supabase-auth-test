@@ -1,7 +1,7 @@
 import api from "@/api/axios";
 import { useLogout } from "@/api/queries/auth.queries";
 import { useDeletePost, usePosts } from "@/api/queries/post.queries";
-import ConfirmationDialog from "@/components/ConfirmationDialog";
+import ConfirmationDialog from "@/components/ui/ConfirmationDialog";
 import Post from "@/components/pages/home/Post";
 import PostForm from "@/components/pages/home/PostForm";
 import { Dialog } from "@/components/ui/Dialog";
