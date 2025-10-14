@@ -1,4 +1,5 @@
 import { useCreateSession } from "@/api/queries/auth.queries";
+import Loader from "@/components/ui/Loader";
 import { GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -43,7 +44,15 @@ const Page = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return <div>Just a moment. Almost done!</div>;
+  return (
+    <div className="flex min-h-dvh flex-col items-center justify-center">
+      <Loader className="size-10" />
+      <p className="mt-2 text-lg font-medium">
+        Just a moment.{" "}
+        <span className="text-primary">Almost done logging you in!</span>
+      </p>
+    </div>
+  );
 };
 
 export default Page;

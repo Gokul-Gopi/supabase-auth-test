@@ -12,7 +12,10 @@ const Loader = ({ className }: ILoader) => {
       icon="tabler:loader"
       role="status"
       aria-label="Loading"
-      className={cn("size-4 animate-spin", className)}
+      className={cn(
+        "size-4 animate-[spin_2.5s_ease-in-out_infinite] duration-1000",
+        className,
+      )}
     />
   );
 };
