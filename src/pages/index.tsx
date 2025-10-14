@@ -20,6 +20,10 @@ export const getServerSideProps = withAuth(async (ctx, user) => {
   const queryClient = new QueryClient();
   const cookie = ctx.req.headers.cookie;
 
+  // SSR doesn't having access to cookies
+  // so neeeded to manualy passes it on the
+  // query function. Otherwise the endpoint
+  // returns 401
   await queryClient.prefetchQuery({
     queryKey: ["posts"],
     queryFn: async () => {
