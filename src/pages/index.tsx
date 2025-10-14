@@ -1,14 +1,15 @@
 import { useLogout } from "@/api/queries/auth";
+import ConfirmationDialog from "@/components/ConfirmationDialog";
 import Post from "@/components/pages/home/Post";
-import { Input } from "@/components/ui/Input";
+import PostForm from "@/components/pages/home/PostForm";
+import { Dialog } from "@/components/ui/Dialog";
 import LoaderButton from "@/components/ui/LoaderButton";
-import { Textarea } from "@/components/ui/Textarea";
 import useAuthStore from "@/store/userStore";
 import withAuth from "@/utils/client/withAuth";
-import { IPostForm } from "@/utils/types";
+import { IPostData } from "@/utils/types";
 import { Icon } from "@iconify/react";
 import { useRouter } from "next/router";
-import { FormProvider, useForm } from "react-hook-form";
+import { useState } from "react";
 
 export const getServerSideProps = withAuth(async (_ctx, user) => {
   return {
@@ -18,14 +19,11 @@ export const getServerSideProps = withAuth(async (_ctx, user) => {
 
 const Page = () => {
   const router = useRouter();
-  const form = useForm<IPostForm>();
+  const [postToEdit, setPostToEdit] = useState<IPostData | null>();
+  const [postIdToDelete, setPostIdToDelete] = useState<number | null>();
 
   const logout = useLogout();
   const { user } = useAuthStore();
-
-  const onSubmit = form.handleSubmit((data) => {
-    console.log(data);
-  });
 
   const onLogout = () => {
     logout.mutate(undefined, {
@@ -37,25 +35,14 @@ const Page = () => {
 
   return (
     <div className="px-20">
-      <div className="flex items-center justify-between pt-6">
+      <div className="mb-12 flex items-center justify-between pt-6">
         <h3 className="text-xl">Oh great.. its {user?.name}!</h3>
         <LoaderButton onClick={onLogout} loading={logout.isPending}>
           <Icon icon="tabler:logout-2" /> Logout
         </LoaderButton>
       </div>
 
-      <FormProvider {...form}>
-        <form
-          onSubmit={onSubmit}
-          className="mt-12 flex max-w-[20rem] flex-col items-start gap-4"
-        >
-          <Input placeholder="Title" {...form.register("title")} />
-          <Textarea placeholder="Content" {...form.register("content")} />
-          <LoaderButton type="submit" className="w-full">
-            Create
-          </LoaderButton>
-        </form>
-      </FormProvider>
+      <PostForm />
 
       <hr className="my-8" />
 
@@ -64,15 +51,36 @@ const Page = () => {
       </h3>
 
       <div className="grid grid-cols-4 gap-4">
-        {Array.from({ length: 10 }).map((_, i) => (
+        {[
+          {
+            id: 1,
+            title: "Title",
+            content:
+              "Lorem ipsum dolor sit amet consectetur adipiscing elit m ipsum dolor sit amet consectetur adipiscing elit",
+          },
+        ].map((post, i) => (
           <Post
             key={i}
-            id={i}
-            title="Title"
-            content="Lorem ipsum dolor sit amet consectetur adipiscing elit m ipsum dolor sit amet consectetur adipiscing elit"
+            {...post}
+            onEdit={() => setPostToEdit(post)}
+            onDelete={() => setPostIdToDelete(post.id)}
           />
         ))}
       </div>
+
+      <Dialog
+        open={!!postToEdit}
+        onOpenChange={() => setPostToEdit(null)}
+        title="Edit post"
+      >
+        <PostForm formData={postToEdit} />
+      </Dialog>
+
+      <ConfirmationDialog
+        open={!!postIdToDelete}
+        onOpenChange={() => setPostIdToDelete(null)}
+        onConfirm={() => setPostIdToDelete(null)}
+      />
     </div>
   );
 };

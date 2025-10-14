@@ -6,13 +6,15 @@ import {
   ContextMenuTrigger,
 } from "@radix-ui/react-context-menu";
 
-interface IPost {
+interface IPostProps {
   id: number;
   title: string;
   content: string;
+  onEdit: () => void;
+  onDelete: () => void;
 }
 
-const Post = ({ title, content }: IPost) => {
+const Post = ({ title, content, onEdit, onDelete }: IPostProps) => {
   return (
     <ContextMenu>
       <ContextMenuTrigger>
@@ -27,12 +29,18 @@ const Post = ({ title, content }: IPost) => {
       </ContextMenuTrigger>
 
       <ContextMenuContent className="bg-card border-primary :not-last:border flex w-28 flex-col gap-1 rounded border p-2 text-sm *:flex *:items-center *:gap-1 *:not-last:border-b *:not-last:pb-1 *:focus:outline-0">
-        <ContextMenuItem className="text-primary cursor-pointer">
+        <ContextMenuItem
+          onClick={onEdit}
+          className="text-primary cursor-pointer"
+        >
           <Icon icon="tabler:edit" />
           Edit
         </ContextMenuItem>
 
-        <ContextMenuItem className="text-destructive cursor-pointer">
+        <ContextMenuItem
+          onClick={onDelete}
+          className="text-destructive cursor-pointer"
+        >
           <Icon icon="tabler:trash" />
           Delete
         </ContextMenuItem>

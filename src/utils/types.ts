@@ -31,3 +31,7 @@ export interface IPostForm {
   title: string;
   content: string;
 }
+
+export interface IPostData extends IPostForm {
+  id: number;
+}
