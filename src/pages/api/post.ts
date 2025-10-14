@@ -8,107 +8,92 @@ import authRoute, {
 
 const handleCreatePost = async (
   req: AuthenticatedNextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) => {
-  try {
-    const userId = req.user.id;
-    const { title, body } = validateBody(createPostSchema, req.body);
+  const userId = req.userId;
+  const { title, content } = validateBody(createPostSchema, req.body);
 
-    const post = await prisma.post.create({
-      data: {
-        title,
-        body,
-        userId,
-      },
-    });
+  const post = await prisma.post.create({
+    data: {
+      title,
+      content,
+      userId,
+    },
+  });
 
-    return res.status(201).json({ data: post });
-  } catch (error) {
-    return handleError(res, error);
-  }
+  return res.status(201).json({ data: post });
 };
 
 const handleGetPosts = async (
   req: AuthenticatedNextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) => {
-  try {
-    const posts = await prisma.post.findMany({
-      where: {
-        userId: req.user.id,
-      },
-    });
+  const userId = req.userId;
+  const posts = await prisma.post.findMany({
+    where: {
+      userId,
+    },
+  });
 
-    return res.status(200).json({ data: posts });
-  } catch (error) {
-    return handleError(res, error);
-  }
+  return res.status(200).json({ data: posts });
 };
 
 const handleUpdatePost = async (
   req: AuthenticatedNextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) => {
-  try {
-    const id = req.query?.id;
-    if (!id) throw new Error("No post id found");
+  const id = req.query?.id;
+  if (!id) throw new Error("No post id found");
 
-    const { title, body } = validateBody(createPostSchema, req.body);
+  const { title, content } = validateBody(createPostSchema, req.body);
 
-    const post = await prisma.post.update({
-      where: {
-        id: +id,
-      },
-      data: {
-        title,
-        body,
-      },
-    });
-    return res.status(200).json({ data: post });
-  } catch (error) {
-    return handleError(res, error);
-  }
+  const post = await prisma.post.update({
+    where: {
+      id: +id,
+    },
+    data: {
+      title,
+      content,
+    },
+  });
+  return res.status(200).json({ data: post });
 };
 
 const handleDeletePost = async (
   req: AuthenticatedNextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) => {
-  try {
-    const id = req.query?.id;
-    if (!id) throw new Error("No post id found");
+  const id = req.query?.id;
+  if (!id) throw new Error("No post id found");
 
-    const post = await prisma.post.delete({
-      where: {
-        id: +id,
-      },
-    });
-    return res.status(200).json({ data: post });
-  } catch (error) {
-    return handleError(res, error);
-  }
+  const post = await prisma.post.delete({
+    where: {
+      id: +id,
+    },
+  });
+  return res.status(200).json({ data: post });
 };
 
-export default authRoute(
-  () => (req: AuthenticatedNextApiRequest, res: NextApiResponse) => {
-    try {
-      const method = req.method;
+const route = authRoute((req, res) => {
+  try {
+    const method = req.method;
 
-      switch (method) {
-        case "GET":
-          return handleCreatePost(req, res);
-        case "POST":
-          return handleGetPosts(req, res);
-        case "PUT":
-          return handleUpdatePost(req, res);
-        case "DELETE":
-          return handleDeletePost(req, res);
+    switch (method) {
+      case "GET":
+        return handleGetPosts(req, res);
+      case "POST":
+        return handleCreatePost(req, res);
+      case "PUT":
+        return handleUpdatePost(req, res);
+      case "DELETE":
+        return handleDeletePost(req, res);
 
-        default:
-          return res.status(405).json({ message: "Method not allowed" });
-      }
-    } catch (error) {
-      handleError(res, error);
+      default:
+        return res.status(405).json({ message: "Method not allowed" });
     }
+  } catch (error) {
+    handleError(res, error);
   }
-);
+});
+
+export default route;

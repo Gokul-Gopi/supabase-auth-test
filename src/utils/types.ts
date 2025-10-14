@@ -1,5 +1,11 @@
 import { AxiosError, AxiosResponse } from "axios";
 
+export interface IDocument {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface ISignup {
   email: string;
   password: string;
@@ -35,3 +41,5 @@ export interface IPostForm {
 export interface IPostData extends IPostForm {
   id: number;
 }
+
+export interface IPost extends IDocument, IPostData {}

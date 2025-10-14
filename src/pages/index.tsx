@@ -1,4 +1,5 @@
 import { useLogout } from "@/api/queries/auth.queries";
+import { useDeletePost, usePosts } from "@/api/queries/post.queries";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import Post from "@/components/pages/home/Post";
 import PostForm from "@/components/pages/home/PostForm";
@@ -10,6 +11,7 @@ import { IPostData } from "@/utils/types";
 import { Icon } from "@iconify/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export const getServerSideProps = withAuth(async (_ctx, user) => {
   return {
@@ -22,8 +24,20 @@ const Page = () => {
   const [postToEdit, setPostToEdit] = useState<IPostData | null>();
   const [postIdToDelete, setPostIdToDelete] = useState<number | null>();
 
-  const logout = useLogout();
   const { user } = useAuthStore();
+
+  const logout = useLogout();
+  const { data: posts } = usePosts();
+  const deletePost = useDeletePost();
+
+  const onDelete = (id: number) => {
+    deletePost.mutate(id, {
+      onSuccess: () => {
+        toast.success("Post deleted");
+        setPostIdToDelete(null);
+      },
+    });
+  };
 
   const onLogout = () => {
     logout.mutate(undefined, {
@@ -51,14 +65,7 @@ const Page = () => {
       </h3>
 
       <div className="grid grid-cols-4 gap-4">
-        {[
-          {
-            id: 1,
-            title: "Title",
-            content:
-              "Lorem ipsum dolor sit amet consectetur adipiscing elit m ipsum dolor sit amet consectetur adipiscing elit",
-          },
-        ].map((post, i) => (
+        {posts?.map((post, i) => (
           <Post
             key={i}
             {...post}
@@ -73,13 +80,17 @@ const Page = () => {
         onOpenChange={() => setPostToEdit(null)}
         title="Edit post"
       >
-        <PostForm formData={postToEdit} />
+        <PostForm
+          formData={postToEdit}
+          onEditSuccess={() => setPostToEdit(null)}
+        />
       </Dialog>
 
       <ConfirmationDialog
         open={!!postIdToDelete}
         onOpenChange={() => setPostIdToDelete(null)}
-        onConfirm={() => setPostIdToDelete(null)}
+        onConfirm={() => onDelete(postIdToDelete as number)}
+        loading={deletePost.isPending}
       />
     </div>
   );

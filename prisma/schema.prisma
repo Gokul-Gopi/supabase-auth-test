@@ -19,7 +19,7 @@ model Profile {
 model Post {
   id        Int      @id @default(autoincrement())
   title     String
-  body      String
+  content   String
   user      Profile  @relation(fields: [userId], references: [id])
   userId    String   @db.Uuid
   createdAt DateTime @default(now())

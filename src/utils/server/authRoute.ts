@@ -1,13 +1,12 @@
 import createServerClient from "@/utils/supbaseServerClient";
 import { NextApiRequest, NextApiResponse } from "next";
-import { IUser } from "../types";
 
 export interface AuthenticatedNextApiRequest extends NextApiRequest {
-  user: IUser;
+  userId: string;
 }
 
 const authRoute = (
-  handler: (req: NextApiRequest, res: NextApiResponse) => void
+  handler: (req: AuthenticatedNextApiRequest, res: NextApiResponse) => void,
 ) => {
   return async (req: AuthenticatedNextApiRequest, res: NextApiResponse) => {
     const supabase = createServerClient(req, res);
@@ -19,7 +18,7 @@ const authRoute = (
     if (error || !user)
       return res.status(401).json({ message: "Unauthorized" });
 
-    req.user = user.user_metadata as IUser;
+    req.userId = user.id as string;
 
     return handler(req, res);
   };

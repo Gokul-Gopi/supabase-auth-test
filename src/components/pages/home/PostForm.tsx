@@ -1,17 +1,24 @@
+import { useCreatePost, useEditPost } from "@/api/queries/post.queries";
 import { Input } from "@/components/ui/Input";
 import LoaderButton from "@/components/ui/LoaderButton";
 import { Textarea } from "@/components/ui/Textarea";
 import { cn } from "@/utils/client/helpers";
-import { IPostForm } from "@/utils/types";
+import { IPostData, IPostForm } from "@/utils/types";
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 interface IPostFormProps {
-  formData?: IPostForm | null;
+  formData?: IPostData | null;
+  onEditSuccess?: () => void;
 }
 
-const PostForm = ({ formData }: IPostFormProps) => {
+const PostForm = ({ formData, onEditSuccess }: IPostFormProps) => {
   const form = useForm<IPostForm>();
+
+  const createPost = useCreatePost();
+  const editPost = useEditPost();
+
   const editMode = !!formData;
 
   useEffect(() => {
@@ -23,7 +30,24 @@ const PostForm = ({ formData }: IPostFormProps) => {
   }, [editMode]);
 
   const onSubmit = form.handleSubmit((data) => {
-    console.log(data);
+    if (editMode) {
+      editPost.mutate(
+        { id: formData.id, ...data },
+        {
+          onSuccess: () => {
+            toast.success("Post edited");
+            onEditSuccess?.();
+          },
+        },
+      );
+    } else {
+      createPost.mutate(data, {
+        onSuccess: () => {
+          toast.success("Post created");
+          form.reset();
+        },
+      });
+    }
   });
 
   return (
@@ -36,7 +60,11 @@ const PostForm = ({ formData }: IPostFormProps) => {
       >
         <Input placeholder="Title" {...form.register("title")} />
         <Textarea placeholder="Content" {...form.register("content")} />
-        <LoaderButton type="submit" className="w-full">
+        <LoaderButton
+          loading={editMode ? editPost.isPending : createPost.isPending}
+          type="submit"
+          className="w-full"
+        >
           {editMode ? "Update" : "Create"}
         </LoaderButton>
       </form>

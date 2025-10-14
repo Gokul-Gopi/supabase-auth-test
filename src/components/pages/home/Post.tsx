@@ -7,7 +7,6 @@ import {
 } from "@radix-ui/react-context-menu";
 
 interface IPostProps {
-  id: number;
   title: string;
   content: string;
   onEdit: () => void;

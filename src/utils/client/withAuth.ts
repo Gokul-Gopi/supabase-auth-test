@@ -18,12 +18,12 @@ const createClient = ({ req, res }: GetServerSidePropsContext) => {
           res.setHeader(
             "Set-Cookie",
             cookiesToSet.map(({ name, value, options }) =>
-              serializeCookieHeader(name, value, options)
-            )
+              serializeCookieHeader(name, value, options),
+            ),
           );
         },
       },
-    }
+    },
   );
 
   return supabase;
@@ -32,8 +32,8 @@ const createClient = ({ req, res }: GetServerSidePropsContext) => {
 const withAuth = (
   handler: (
     context: GetServerSidePropsContext,
-    user: IUser | null
-  ) => ReturnType<GetServerSideProps>
+    user: IUser | null,
+  ) => ReturnType<GetServerSideProps>,
 ) => {
   return async (ctx: GetServerSidePropsContext) => {
     try {
@@ -44,11 +44,14 @@ const withAuth = (
       } = await supabase.auth.getUser();
 
       if (!user) {
+        // return {
+        //   redirect: {
+        //     destination: "/login",
+        //     permanent: false,
+        //   },
+        // };
         return {
-          redirect: {
-            destination: "/login",
-            permanent: false,
-          },
+          props: {},
         };
       }
 
