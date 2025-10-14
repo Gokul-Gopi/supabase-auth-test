@@ -1,4 +1,4 @@
-import { useLogout } from "@/api/queries/auth";
+import { useLogout } from "@/api/queries/auth.queries";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import Post from "@/components/pages/home/Post";
 import PostForm from "@/components/pages/home/PostForm";

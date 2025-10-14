@@ -1,4 +1,4 @@
-import { useCreateSession } from "@/api/queries/auth";
+import { useCreateSession } from "@/api/queries/auth.queries";
 import { GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -35,7 +35,7 @@ const Page = () => {
         router.push("/login");
         toast.error(
           "We are really sorry. We could not log you in. Please try again or try using other methods",
-          { duration: 10000 }
+          { duration: 10000 },
         );
       },
     });

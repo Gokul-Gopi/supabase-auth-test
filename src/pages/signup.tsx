@@ -1,4 +1,4 @@
-import { useSignup } from "@/api/queries/auth";
+import { useSignup } from "@/api/queries/auth.queries";
 import { Input } from "@/components/ui/Input";
 import LoaderButton from "@/components/ui/LoaderButton";
 import supabase from "@/utils/client/supabase";
@@ -44,7 +44,7 @@ const Page = () => {
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
-      className="flex flex-col gap-4 h-dvh justify-center mx-auto max-w-[20rem]"
+      className="mx-auto flex h-dvh max-w-[20rem] flex-col justify-center gap-4"
     >
       <LoaderButton
         onClick={onOAuthSubmit}
@@ -84,7 +84,7 @@ const Page = () => {
           Signup
         </LoaderButton>
 
-        <Link href="/login" className="text-primary text-sm text-center">
+        <Link href="/login" className="text-primary text-center text-sm">
           I already have an account bro
         </Link>
       </FormProvider>

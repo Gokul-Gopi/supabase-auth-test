@@ -1,4 +1,4 @@
-import { useLogin } from "@/api/queries/auth";
+import { useLogin } from "@/api/queries/auth.queries";
 import LoaderButton from "@/components/ui/LoaderButton";
 import { Input } from "@/components/ui/Input";
 import { ILogin } from "@/utils/types";
@@ -44,7 +44,7 @@ const Page = () => {
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
-      className="flex flex-col gap-4 min-h-dvh justify-center mx-auto max-w-[20rem]"
+      className="mx-auto flex min-h-dvh max-w-[20rem] flex-col justify-center gap-4"
     >
       <LoaderButton
         onClick={onOAuthSubmit}
@@ -79,7 +79,7 @@ const Page = () => {
           Login
         </LoaderButton>
 
-        <Link href="/signup" className="text-primary text-sm text-center">
+        <Link href="/signup" className="text-primary text-center text-sm">
           Create a new account yo!
         </Link>
       </FormProvider>
