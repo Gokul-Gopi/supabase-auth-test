@@ -1,8 +1,11 @@
 import { useSignup } from "@/api/queries/auth.queries";
-import { Input } from "@/components/ui/Input";
+import ControlledPasswordInput from "@/components/form/ControlledPasswordInput";
+import ControlledTextInput from "@/components/form/ControlledTextInput";
 import LoaderButton from "@/components/ui/LoaderButton";
 import supabase from "@/utils/client/supabase";
 import { ISignup } from "@/utils/types";
+import { signupSchema } from "@/utils/validationSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -11,7 +14,9 @@ import { FormProvider, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 const Page = () => {
-  const form = useForm<ISignup>();
+  const form = useForm<ISignup>({
+    resolver: zodResolver(signupSchema),
+  });
   const signup = useSignup();
   const router = useRouter();
 
@@ -23,7 +28,10 @@ const Page = () => {
       provider: "google",
       options: {
         redirectTo: `${process.env.NEXT_PUBLIC_ORIGIN}/create-session`,
-        // The param was added for testing, since the google consent screen only shows up once for a particular account
+        // The param was added for testing
+        // since the google consent screen only
+        // shows up once for an account
+        //
         // queryParams: {
         //   prompt: "consent",
         // },
@@ -63,22 +71,9 @@ const Page = () => {
       </div>
 
       <FormProvider {...form}>
-        <Input
-          {...form.register("email")}
-          className="border"
-          placeholder="Email"
-        />
-        <Input
-          {...form.register("name")}
-          className="border"
-          placeholder="Name"
-        />
-        <Input
-          {...form.register("password")}
-          type="password"
-          className="border"
-          placeholder="Password"
-        />
+        <ControlledTextInput name="email" placeholder="Email" />
+        <ControlledTextInput name="name" placeholder="Name" />
+        <ControlledPasswordInput name="password" placeholder="Password" />
 
         <LoaderButton type="submit" loading={signup.isPending}>
           Signup

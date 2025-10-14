@@ -1,6 +1,5 @@
 import { useLogin } from "@/api/queries/auth.queries";
 import LoaderButton from "@/components/ui/LoaderButton";
-import { Input } from "@/components/ui/Input";
 import { ILogin } from "@/utils/types";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -9,9 +8,15 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import supabase from "@/utils/client/supabase";
 import { Icon } from "@iconify/react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema } from "@/utils/validationSchema";
+import ControlledTextInput from "@/components/form/ControlledTextInput";
+import ControlledPasswordInput from "@/components/form/ControlledPasswordInput";
 
 const Page = () => {
-  const form = useForm<ILogin>();
+  const form = useForm<ILogin>({
+    resolver: zodResolver(loginSchema),
+  });
   const login = useLogin();
   const router = useRouter();
 
@@ -32,7 +37,10 @@ const Page = () => {
       provider: "google",
       options: {
         redirectTo: `${process.env.NEXT_PUBLIC_ORIGIN}/create-session`,
-        // The param was added for testing, since the google consent screen only shows up once for a particular account
+        // The param was added for testing
+        // since the google consent screen only
+        // shows up once for an account
+        //
         // queryParams: {
         //   prompt: "consent",
         // },
@@ -63,17 +71,8 @@ const Page = () => {
       </div>
 
       <FormProvider {...form}>
-        <Input
-          {...form.register("email")}
-          className="border"
-          placeholder="Email"
-        />
-        <Input
-          type="password"
-          {...form.register("password")}
-          className="border"
-          placeholder="Password"
-        />
+        <ControlledTextInput name="email" placeholder="Email" />
+        <ControlledPasswordInput name="password" placeholder="Password" />
 
         <LoaderButton type="submit" loading={login.isPending}>
           Login

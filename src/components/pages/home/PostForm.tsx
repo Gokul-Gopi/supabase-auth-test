@@ -1,12 +1,14 @@
 import { useCreatePost, useEditPost } from "@/api/queries/post.queries";
-import { Input } from "@/components/ui/Input";
+import ControlledTextarea from "@/components/form/ControlledTextarea";
+import ControlledTextInput from "@/components/form/ControlledTextInput";
 import LoaderButton from "@/components/ui/LoaderButton";
-import { Textarea } from "@/components/ui/Textarea";
 import { cn } from "@/utils/client/helpers";
 import { IPostData, IPostForm } from "@/utils/types";
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createPostSchema } from "@/utils/validationSchema";
 
 interface IPostFormProps {
   formData?: IPostData | null;
@@ -14,7 +16,9 @@ interface IPostFormProps {
 }
 
 const PostForm = ({ formData, onEditSuccess }: IPostFormProps) => {
-  const form = useForm<IPostForm>();
+  const form = useForm<IPostForm>({
+    resolver: zodResolver(createPostSchema),
+  });
 
   const createPost = useCreatePost();
   const editPost = useEditPost();
@@ -58,8 +62,8 @@ const PostForm = ({ formData, onEditSuccess }: IPostFormProps) => {
           "max-w-none": editMode,
         })}
       >
-        <Input placeholder="Title" {...form.register("title")} />
-        <Textarea placeholder="Content" {...form.register("content")} />
+        <ControlledTextInput name="title" placeholder="Title" />
+        <ControlledTextarea name="content" placeholder="Content" />
         <LoaderButton
           loading={editMode ? editPost.isPending : createPost.isPending}
           type="submit"

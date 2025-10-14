@@ -31,7 +31,6 @@ export const getServerSideProps = withAuth(async (ctx, user) => {
         headers: {
           Cookie: cookie,
         },
-        withCredentials: true,
       });
 
       return res.data;
