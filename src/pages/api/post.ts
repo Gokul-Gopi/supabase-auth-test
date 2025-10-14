@@ -33,6 +33,9 @@ const handleGetPosts = async (
     where: {
       userId,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 
   return res.status(200).json({ data: posts });

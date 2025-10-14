@@ -1,21 +1,41 @@
+import api from "@/api/axios";
 import { useLogout } from "@/api/queries/auth.queries";
 import { useDeletePost, usePosts } from "@/api/queries/post.queries";
 import ConfirmationDialog from "@/components/ConfirmationDialog";
 import Post from "@/components/pages/home/Post";
 import PostForm from "@/components/pages/home/PostForm";
 import { Dialog } from "@/components/ui/Dialog";
+import Loader from "@/components/ui/Loader";
 import LoaderButton from "@/components/ui/LoaderButton";
 import useAuthStore from "@/store/userStore";
 import withAuth from "@/utils/client/withAuth";
 import { IPostData } from "@/utils/types";
 import { Icon } from "@iconify/react";
+import { dehydrate, QueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-export const getServerSideProps = withAuth(async (_ctx, user) => {
+export const getServerSideProps = withAuth(async (ctx, user) => {
+  const queryClient = new QueryClient();
+  const cookie = ctx.req.headers.cookie;
+
+  await queryClient.prefetchQuery({
+    queryKey: ["posts"],
+    queryFn: async () => {
+      const res = await api.get("/post", {
+        headers: {
+          Cookie: cookie,
+        },
+        withCredentials: true,
+      });
+
+      return res.data;
+    },
+  });
+
   return {
-    props: { user },
+    props: { user, dehydratedState: dehydrate(queryClient) },
   };
 });
 
@@ -27,7 +47,7 @@ const Page = () => {
   const { user } = useAuthStore();
 
   const logout = useLogout();
-  const { data: posts } = usePosts();
+  const posts = usePosts();
   const deletePost = useDeletePost();
 
   const onDelete = (id: number) => {
@@ -64,16 +84,22 @@ const Page = () => {
         POSTS
       </h3>
 
-      <div className="grid grid-cols-4 gap-4">
-        {posts?.map((post, i) => (
-          <Post
-            key={i}
-            {...post}
-            onEdit={() => setPostToEdit(post)}
-            onDelete={() => setPostIdToDelete(post.id)}
-          />
-        ))}
-      </div>
+      {posts.isPending ? (
+        <div className="flex w-full justify-center">
+          <Loader className="size-6" />
+        </div>
+      ) : (
+        <div className="grid grid-cols-4 gap-4">
+          {posts?.data?.data?.map((post) => (
+            <Post
+              key={post.id}
+              {...post}
+              onEdit={() => setPostToEdit(post)}
+              onDelete={() => setPostIdToDelete(post.id)}
+            />
+          ))}
+        </div>
+      )}
 
       <Dialog
         open={!!postToEdit}
