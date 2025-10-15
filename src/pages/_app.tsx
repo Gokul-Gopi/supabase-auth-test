@@ -42,8 +42,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <HydrationBoundary state={pageProps.dehydratedState}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="dark"
           disableTransitionOnChange
         >
           <Component {...pageProps} />

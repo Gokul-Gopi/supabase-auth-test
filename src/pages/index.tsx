@@ -15,6 +15,7 @@ import { dehydrate, QueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import DarkMode from "@/components/ui/DarkMode";
 
 export const getServerSideProps = withAuth(async (ctx, user) => {
   const queryClient = new QueryClient();
@@ -74,9 +75,13 @@ const Page = () => {
     <div className="px-20">
       <div className="mb-12 flex items-center justify-between pt-6">
         <h3 className="text-xl">Oh great.. its {user?.name}!</h3>
-        <LoaderButton onClick={onLogout} loading={logout.isPending}>
-          <Icon icon="tabler:logout-2" /> Logout
-        </LoaderButton>
+        <div className="flex items-center gap-5">
+          <DarkMode />
+
+          <LoaderButton onClick={onLogout} loading={logout.isPending}>
+            <Icon icon="tabler:logout-2" /> Logout
+          </LoaderButton>
+        </div>
       </div>
 
       <PostForm />

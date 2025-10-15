@@ -44,14 +44,11 @@ const withAuth = (
       } = await supabase.auth.getUser();
 
       if (!user) {
-        // return {
-        //   redirect: {
-        //     destination: "/login",
-        //     permanent: false,
-        //   },
-        // };
         return {
-          props: {},
+          redirect: {
+            destination: "/login",
+            permanent: false,
+          },
         };
       }
 
