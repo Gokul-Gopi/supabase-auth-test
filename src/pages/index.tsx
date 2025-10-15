@@ -72,10 +72,10 @@ const Page = () => {
   };
 
   return (
-    <div className="px-20">
-      <div className="mb-12 flex items-center justify-between pt-6">
+    <div className="px-4 sm:px-20">
+      <div className="mb-12 flex items-center justify-between gap-4 pt-6 max-md:flex-col">
         <h3 className="text-xl">Oh great.. its {user?.name}!</h3>
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-5 max-md:w-full max-md:justify-between">
           <DarkMode />
 
           <LoaderButton onClick={onLogout} loading={logout.isPending}>
@@ -97,7 +97,7 @@ const Page = () => {
           <Loader className="size-6" />
         </div>
       ) : (
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid auto-rows-[minmax(7.4rem,1fr)] grid-cols-2 gap-4 lg:grid-cols-4">
           {posts?.data?.data?.map((post) => (
             <Post
               key={post.id}

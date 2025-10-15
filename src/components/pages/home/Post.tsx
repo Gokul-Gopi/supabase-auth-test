@@ -17,7 +17,7 @@ const Post = ({ title, content, onEdit, onDelete }: IPostProps) => {
   return (
     <ContextMenu>
       <ContextMenuTrigger>
-        <div className="bg-secondary border-primary rounded border p-4">
+        <div className="bg-card border-accent h-full rounded border p-4 shadow">
           <div>
             <h5 className="text-muted-foreground truncate font-semibold">
               {title}

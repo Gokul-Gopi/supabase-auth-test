@@ -58,8 +58,8 @@ const PostForm = ({ formData, onEditSuccess }: IPostFormProps) => {
     <FormProvider {...form}>
       <form
         onSubmit={onSubmit}
-        className={cn("flex max-w-[20rem] flex-col items-start gap-4", {
-          "max-w-none": editMode,
+        className={cn("flex flex-col items-start gap-4 md:max-w-[20rem]", {
+          "md:max-w-none": editMode,
         })}
       >
         <ControlledTextInput name="title" placeholder="Title" />
