@@ -15,6 +15,11 @@ interface IPostFormProps {
   onEditSuccess?: () => void;
 }
 
+const defaultValues: IPostForm = {
+  title: "",
+  content: "",
+};
+
 const PostForm = ({ formData, onEditSuccess }: IPostFormProps) => {
   const form = useForm<IPostForm>({
     resolver: zodResolver(createPostSchema),
@@ -48,7 +53,7 @@ const PostForm = ({ formData, onEditSuccess }: IPostFormProps) => {
       createPost.mutate(data, {
         onSuccess: () => {
           toast.success("Post created");
-          form.reset();
+          form.reset(defaultValues);
         },
       });
     }
