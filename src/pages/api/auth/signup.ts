@@ -15,7 +15,7 @@ export default async function handler(
 
     const supabase = supabaseServerClient(req, res);
 
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -25,7 +25,9 @@ export default async function handler(
 
     if (error) throw new Error(error.message);
 
-    return res.status(200).json({ message: "Signup successful" });
+    return res
+      .status(200)
+      .json({ data: data.user, message: "Signup successful" });
   } catch (error) {
     handleError(res, error);
   }
