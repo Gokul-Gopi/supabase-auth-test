@@ -15,27 +15,19 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import DarkMode from "@/components/ui/DarkMode";
+import createClient from "@/utils/supbaseServerClient";
 
 export const getServerSideProps = withAuth(async (ctx, user) => {
   const queryClient = new QueryClient();
-  const cookie = ctx.req.headers.cookie;
+  const supabase = createClient(ctx);
 
-  // SSR doesn't having access to cookies
-  // so neeeded to manualy passes it on the
-  // query function. Otherwise the endpoint
-  // returns 401
-  // await queryClient.prefetchQuery({
-  //   queryKey: ["posts"],
-  //   queryFn: async () => {
-  //     const res = await api.get("/post", {
-  //       headers: {
-  //         Cookie: cookie,
-  //       },
-  //     });
-
-  //     return res.data;
-  //   },
-  // });
+  await queryClient.prefetchQuery({
+    queryKey: ["posts"],
+    queryFn: async () => {
+      const res = await supabase.from("Post").select("*").order("createdAt");
+      return res.data;
+    },
+  });
 
   return {
     props: { user, dehydratedState: dehydrate(queryClient) },
