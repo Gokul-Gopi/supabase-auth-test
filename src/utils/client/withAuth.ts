@@ -52,7 +52,7 @@ const withAuth = (
         };
       }
 
-      return handler(ctx, user.user_metadata as IUser);
+      return handler(ctx, { id: user.id, ...user.user_metadata } as IUser);
     } catch {
       return {
         redirect: {

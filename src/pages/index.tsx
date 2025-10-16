@@ -1,4 +1,3 @@
-import api from "@/api/axios";
 import { useLogout } from "@/api/queries/auth.queries";
 import { useDeletePost, usePosts } from "@/api/queries/post.queries";
 import ConfirmationDialog from "@/components/ui/ConfirmationDialog";
@@ -25,18 +24,18 @@ export const getServerSideProps = withAuth(async (ctx, user) => {
   // so neeeded to manualy passes it on the
   // query function. Otherwise the endpoint
   // returns 401
-  await queryClient.prefetchQuery({
-    queryKey: ["posts"],
-    queryFn: async () => {
-      const res = await api.get("/post", {
-        headers: {
-          Cookie: cookie,
-        },
-      });
+  // await queryClient.prefetchQuery({
+  //   queryKey: ["posts"],
+  //   queryFn: async () => {
+  //     const res = await api.get("/post", {
+  //       headers: {
+  //         Cookie: cookie,
+  //       },
+  //     });
 
-      return res.data;
-    },
-  });
+  //     return res.data;
+  //   },
+  // });
 
   return {
     props: { user, dehydratedState: dehydrate(queryClient) },
@@ -98,7 +97,7 @@ const Page = () => {
         </div>
       ) : (
         <div className="grid auto-rows-[minmax(7.4rem,1fr)] grid-cols-2 gap-4 lg:grid-cols-4">
-          {posts?.data?.data?.map((post) => (
+          {posts?.data?.map((post) => (
             <Post
               key={post.id}
               {...post}
