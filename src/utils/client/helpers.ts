@@ -6,4 +6,6 @@ import toast from "react-hot-toast";
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
 export const onError = (error: IRequestError) =>
-  toast.error(error.response?.data?.message);
+  toast.error(
+    error.response?.data?.message || error?.message || "Something went wrong",
+  );
